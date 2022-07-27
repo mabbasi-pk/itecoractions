@@ -1,0 +1,25 @@
+
+name: Basic TestCafe Workflow
+on: [push]
+
+jobs:
+  build:
+    name: Run TestCafe Tests
+    runs-on: windows-latest
+    env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install TestCafe from 'npm' and Run Tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome tests"
+             
+      - name: Slack Notification
+        uses: act10ns/slack@v1
+        with: 
+         status: starting
+         channel: '#testcafeactions'
+         message: Starting Build and Deploy...
+        if: always()      
+       
